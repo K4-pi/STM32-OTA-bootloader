@@ -14,8 +14,18 @@
  * 7 -> 0x08060000 = K(128)  #BLOCK B
  */
 
+typedef enum {
+    BLOCK_A,
+    BLOCK_B
+} flash_block_t;
+
+#define BLOCK_A_SECTOR 4
+#define BLOCK_B_SECTOR 6
+
+#define BANKSN_SECTORS 2
+
 #define K(n) ((n) * 1024U) // KB
-#define OTA_MAX_IMAGE K(192)
+#define OTA_MAX_IMAGE_SIZE K(192)
 
 #define META_BEGIN 0x800C000
 #define META_END   0x08010000 // META_BEGIN + 16KB
