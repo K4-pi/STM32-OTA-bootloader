@@ -1,9 +1,9 @@
 #include "bootloader_lib.h"
 
 #include "stm32f407xx.h"
-#include "stm32f4xx_hal_def.h"
-#include "stm32f4xx_hal_flash.h"
-#include "stm32f4xx_hal_flash_ex.h"
+#include "stm32f4xx_hal.h"
+// #include "stm32f4xx_hal_flash.h"
+// #include "stm32f4xx_hal_flash_ex.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -31,7 +31,7 @@ static inline uint32_t read_flash_word(uint32_t address) {
  * @return HAL_StatusTypeDef
  */
 HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc) {
-    uint32_t block_address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
+    uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
 
     CRC->CR = CRC_CR_RESET; // Reset before work
 

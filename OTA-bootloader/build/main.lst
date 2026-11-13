@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccrHXNuN.s 			page 1
+ARM GAS  /tmp/ccGgiQdB.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   28:Src/main.c    **** int main(void)
   29:Src/main.c    **** {
   30:Src/main.c    ****     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-ARM GAS  /tmp/ccrHXNuN.s 			page 2
+ARM GAS  /tmp/ccGgiQdB.s 			page 2
 
 
   31:Src/main.c    ****     HAL_Init();
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   85:Src/main.c    **** /**
   86:Src/main.c    **** * @brief    This function is executed in case of error occurrence.
   87:Src/main.c    **** * @retval None
-ARM GAS  /tmp/ccrHXNuN.s 			page 3
+ARM GAS  /tmp/ccGgiQdB.s 			page 3
 
 
   88:Src/main.c    **** */
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   39:Drivers/CMSIS/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
   40:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ASM
   41:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
-ARM GAS  /tmp/ccrHXNuN.s 			page 4
+ARM GAS  /tmp/ccGgiQdB.s 			page 4
 
 
   42:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   96:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
   97:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
   98:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
-ARM GAS  /tmp/ccrHXNuN.s 			page 5
+ARM GAS  /tmp/ccGgiQdB.s 			page 5
 
 
   99:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  153:Drivers/CMSIS/Include/cmsis_gcc.h ****       pTable->dest[i] = pTable->src[i];
  154:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
  155:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
-ARM GAS  /tmp/ccrHXNuN.s 			page 6
+ARM GAS  /tmp/ccGgiQdB.s 			page 6
 
 
  156:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  210:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  211:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Define macros for porting to both thumb1 and thumb2.
  212:Drivers/CMSIS/Include/cmsis_gcc.h ****  * For thumb1, use low register (r0-r7), specified by constraint "l"
-ARM GAS  /tmp/ccrHXNuN.s 			page 7
+ARM GAS  /tmp/ccGgiQdB.s 			page 7
 
 
  213:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Otherwise, use general registers, specified by constraint "r" */
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  267:Drivers/CMSIS/Include/cmsis_gcc.h ****            It completes when all explicit memory accesses before this instruction complete.
  268:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  269:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DSB(void)
-ARM GAS  /tmp/ccrHXNuN.s 			page 8
+ARM GAS  /tmp/ccGgiQdB.s 			page 8
 
 
  270:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  324:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
  325:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  326:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE int16_t __REVSH(int16_t value)
-ARM GAS  /tmp/ccrHXNuN.s 			page 9
+ARM GAS  /tmp/ccGgiQdB.s 			page 9
 
 
  327:Drivers/CMSIS/Include/cmsis_gcc.h **** {
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  381:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
  382:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t s = (4U /*sizeof(v)*/ * 8U) - 1U; /* extra shift needed at end */
  383:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /tmp/ccrHXNuN.s 			page 10
+ARM GAS  /tmp/ccGgiQdB.s 			page 10
 
 
  384:Drivers/CMSIS/Include/cmsis_gcc.h ****   result = value;                      /* r will be reversed bits of v; first get LSB of v */
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  438:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
  439:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
  440:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
-ARM GAS  /tmp/ccrHXNuN.s 			page 11
+ARM GAS  /tmp/ccGgiQdB.s 			page 11
 
 
  441:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  495:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
  496:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  497:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strexb %0, %2, %1" : "=&r" (result), "=Q" (*addr) : "r" ((uint32_t)value) );
-ARM GAS  /tmp/ccrHXNuN.s 			page 12
+ARM GAS  /tmp/ccGgiQdB.s 			page 12
 
 
  498:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  552:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
  553:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
  554:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /tmp/ccrHXNuN.s 			page 13
+ARM GAS  /tmp/ccGgiQdB.s 			page 13
 
 
  555:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Signed Saturate
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  609:Drivers/CMSIS/Include/cmsis_gcc.h **** {
  610:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
  611:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /tmp/ccrHXNuN.s 			page 14
+ARM GAS  /tmp/ccGgiQdB.s 			page 14
 
 
  612:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  666:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
  667:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRBT(uint8_t value, volatile uint8_t *ptr)
  668:Drivers/CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  /tmp/ccrHXNuN.s 			page 15
+ARM GAS  /tmp/ccGgiQdB.s 			page 15
 
 
  669:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strbt %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) );
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  723:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  724:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  725:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
-ARM GAS  /tmp/ccrHXNuN.s 			page 16
+ARM GAS  /tmp/ccGgiQdB.s 			page 16
 
 
  726:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Unsigned Saturate
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  780:Drivers/CMSIS/Include/cmsis_gcc.h **** 
  781:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldah %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
  782:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint16_t) result);
-ARM GAS  /tmp/ccrHXNuN.s 			page 17
+ARM GAS  /tmp/ccGgiQdB.s 			page 17
 
 
  783:Drivers/CMSIS/Include/cmsis_gcc.h **** }
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  837:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
  838:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire Exclusive (8 bit)
  839:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAB exclusive instruction for 8 bit value.
-ARM GAS  /tmp/ccrHXNuN.s 			page 18
+ARM GAS  /tmp/ccGgiQdB.s 			page 18
 
 
  840:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  894:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlexb %0, %2, %1" : "=&r" (result), "=Q" (*ptr) : "r" ((uint32_t)value) : "mem
  895:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
  896:Drivers/CMSIS/Include/cmsis_gcc.h **** }
-ARM GAS  /tmp/ccrHXNuN.s 			page 19
+ARM GAS  /tmp/ccGgiQdB.s 			page 19
 
 
  897:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  951:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
  952:Drivers/CMSIS/Include/cmsis_gcc.h **** }
  953:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /tmp/ccrHXNuN.s 			page 20
+ARM GAS  /tmp/ccGgiQdB.s 			page 20
 
 
  954:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   50:Src/main.c    ****     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   80              		.loc 1 50 24 is_stmt 0 view .LVU9
   81 0004 08AC     		add	r4, sp, #32
-ARM GAS  /tmp/ccrHXNuN.s 			page 21
+ARM GAS  /tmp/ccGgiQdB.s 			page 21
 
 
   82 0006 3022     		movs	r2, #48
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  124 0044 0292     		str	r2, [sp, #8]
   56:Src/main.c    **** 
  125              		.loc 1 56 5 view .LVU22
-ARM GAS  /tmp/ccrHXNuN.s 			page 22
+ARM GAS  /tmp/ccGgiQdB.s 			page 22
 
 
  126 0046 029A     		ldr	r2, [sp, #8]
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
   76:Src/main.c    ****     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
  162              		.loc 1 76 5 is_stmt 1 view .LVU41
   76:Src/main.c    ****     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-ARM GAS  /tmp/ccrHXNuN.s 			page 23
+ARM GAS  /tmp/ccGgiQdB.s 			page 23
 
 
  163              		.loc 1 76 38 is_stmt 0 view .LVU42
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  210              		.cfi_startproc
  211              		@ Volatile: function does not return.
  212              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccrHXNuN.s 			page 24
+ARM GAS  /tmp/ccGgiQdB.s 			page 24
 
 
  213              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -1415,18 +1415,18 @@ ARM GAS  /tmp/ccrHXNuN.s 			page 1
  240              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
  241              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
  242              		.file 10 "<built-in>"
-ARM GAS  /tmp/ccrHXNuN.s 			page 25
+ARM GAS  /tmp/ccGgiQdB.s 			page 25
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccrHXNuN.s:21     .text.Error_Handler:00000000 $t
-     /tmp/ccrHXNuN.s:27     .text.Error_Handler:00000000 Error_Handler
-     /tmp/ccrHXNuN.s:59     .text.SystemClock_Config:00000000 $t
-     /tmp/ccrHXNuN.s:65     .text.SystemClock_Config:00000000 SystemClock_Config
-     /tmp/ccrHXNuN.s:195    .text.SystemClock_Config:00000080 $d
-     /tmp/ccrHXNuN.s:201    .text.main:00000000 $t
-     /tmp/ccrHXNuN.s:207    .text.main:00000000 main
+     /tmp/ccGgiQdB.s:21     .text.Error_Handler:00000000 $t
+     /tmp/ccGgiQdB.s:27     .text.Error_Handler:00000000 Error_Handler
+     /tmp/ccGgiQdB.s:59     .text.SystemClock_Config:00000000 $t
+     /tmp/ccGgiQdB.s:65     .text.SystemClock_Config:00000000 SystemClock_Config
+     /tmp/ccGgiQdB.s:195    .text.SystemClock_Config:00000080 $d
+     /tmp/ccGgiQdB.s:201    .text.main:00000000 $t
+     /tmp/ccGgiQdB.s:207    .text.main:00000000 main
 
 UNDEFINED SYMBOLS
 memset

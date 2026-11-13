@@ -1,0 +1,536 @@
+ARM GAS  /tmp/ccLXUQbL.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"bootloader_lib.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Src/bootloader_lib.c"
+  20              		.section	.text.verify_firmware,"ax",%progbits
+  21              		.align	1
+  22              		.global	verify_firmware
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	verify_firmware:
+  28              	.LVL0:
+  29              	.LFB135:
+   1:Src/bootloader_lib.c **** #include "bootloader_lib.h"
+   2:Src/bootloader_lib.c **** 
+   3:Src/bootloader_lib.c **** #include "stm32f407xx.h"
+   4:Src/bootloader_lib.c **** #include "stm32f4xx_hal.h"
+   5:Src/bootloader_lib.c **** // #include "stm32f4xx_hal_flash.h"
+   6:Src/bootloader_lib.c **** // #include "stm32f4xx_hal_flash_ex.h"
+   7:Src/bootloader_lib.c **** 
+   8:Src/bootloader_lib.c **** #include <stddef.h>
+   9:Src/bootloader_lib.c **** #include <stdint.h>
+  10:Src/bootloader_lib.c **** 
+  11:Src/bootloader_lib.c **** HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc);
+  12:Src/bootloader_lib.c **** HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size);
+  13:Src/bootloader_lib.c **** 
+  14:Src/bootloader_lib.c **** /**
+  15:Src/bootloader_lib.c ****  * @brief Read data at given address
+  16:Src/bootloader_lib.c ****  *
+  17:Src/bootloader_lib.c ****  * @param address -> address to read from
+  18:Src/bootloader_lib.c ****  *
+  19:Src/bootloader_lib.c ****  * @return value at address
+  20:Src/bootloader_lib.c ****  */
+  21:Src/bootloader_lib.c **** static inline uint32_t read_flash_word(uint32_t address) {
+  22:Src/bootloader_lib.c ****     return *(volatile uint32_t*)address;
+  23:Src/bootloader_lib.c **** }
+  24:Src/bootloader_lib.c **** 
+  25:Src/bootloader_lib.c **** /**
+  26:Src/bootloader_lib.c ****  * @brief Verify firmware CRC checksum
+  27:Src/bootloader_lib.c ****  *
+  28:Src/bootloader_lib.c ****  * @param block        -> which block verify (A/B)
+  29:Src/bootloader_lib.c ****  * @param expected_crc -> correct CRC checksum
+ARM GAS  /tmp/ccLXUQbL.s 			page 2
+
+
+  30:Src/bootloader_lib.c ****  *
+  31:Src/bootloader_lib.c ****  * @return HAL_StatusTypeDef
+  32:Src/bootloader_lib.c ****  */
+  33:Src/bootloader_lib.c **** HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc) {
+  30              		.loc 1 33 79 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 33 79 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0C46     		mov	r4, r1
+  34:Src/bootloader_lib.c ****     uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
+  41              		.loc 1 34 5 is_stmt 1 view .LVU2
+  42              		.loc 1 34 59 is_stmt 0 view .LVU3
+  43 0004 38B9     		cbnz	r0, .L7
+  44              		.loc 1 34 14 discriminator 1 view .LVU4
+  45 0006 DFF84CE0 		ldr	lr, .L10+4
+  46              	.L2:
+  47              	.LVL1:
+  35:Src/bootloader_lib.c **** 
+  36:Src/bootloader_lib.c ****     CRC->CR = CRC_CR_RESET; // Reset before work
+  48              		.loc 1 36 5 is_stmt 1 view .LVU5
+  49              		.loc 1 36 13 is_stmt 0 view .LVU6
+  50 000a 114B     		ldr	r3, .L10
+  51 000c 0122     		movs	r2, #1
+  52 000e 9A60     		str	r2, [r3, #8]
+  37:Src/bootloader_lib.c **** 
+  38:Src/bootloader_lib.c ****     uint32_t i = 0;
+  53              		.loc 1 38 5 is_stmt 1 view .LVU7
+  54              	.LVL2:
+  39:Src/bootloader_lib.c ****     while (i < OTA_MAX_IMAGE_SIZE) { //TODO: Change size
+  55              		.loc 1 39 5 view .LVU8
+  38:Src/bootloader_lib.c ****     while (i < OTA_MAX_IMAGE_SIZE) { //TODO: Change size
+  56              		.loc 1 38 14 is_stmt 0 view .LVU9
+  57 0010 4FF0000C 		mov	ip, #0
+  58              		.loc 1 39 11 view .LVU10
+  59 0014 0CE0     		b	.L3
+  60              	.LVL3:
+  61              	.L7:
+  34:Src/bootloader_lib.c **** 
+  62              		.loc 1 34 14 discriminator 2 view .LVU11
+  63 0016 DFF840E0 		ldr	lr, .L10+8
+  64 001a F6E7     		b	.L2
+  65              	.LVL4:
+  66              	.L5:
+  67              	.LBB6:
+  68              	.LBB7:
+  40:Src/bootloader_lib.c ****         uint32_t value = read_flash_word(address + i);
+  41:Src/bootloader_lib.c **** 
+  42:Src/bootloader_lib.c ****         for (uint8_t j = 0; j < 4; j++) {
+  43:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+  69              		.loc 1 43 13 is_stmt 1 view .LVU12
+  70              		.loc 1 43 23 is_stmt 0 view .LVU13
+ARM GAS  /tmp/ccLXUQbL.s 			page 3
+
+
+  71 001c D0B2     		uxtb	r0, r2
+  72              		.loc 1 43 21 view .LVU14
+  73 001e 0C49     		ldr	r1, .L10
+  74 0020 0860     		str	r0, [r1]
+  44:Src/bootloader_lib.c ****             value >>= 8U;
+  75              		.loc 1 44 13 is_stmt 1 view .LVU15
+  76              		.loc 1 44 19 is_stmt 0 view .LVU16
+  77 0022 120A     		lsrs	r2, r2, #8
+  78              	.LVL5:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+  79              		.loc 1 42 37 is_stmt 1 discriminator 1 view .LVU17
+  80 0024 0133     		adds	r3, r3, #1
+  81              	.LVL6:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+  82              		.loc 1 42 37 is_stmt 0 discriminator 1 view .LVU18
+  83 0026 DBB2     		uxtb	r3, r3
+  84              	.LVL7:
+  85              	.L4:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+  86              		.loc 1 42 31 is_stmt 1 discriminator 2 view .LVU19
+  87 0028 032B     		cmp	r3, #3
+  88 002a F7D9     		bls	.L5
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+  89              		.loc 1 42 31 is_stmt 0 discriminator 2 view .LVU20
+  90              	.LBE7:
+  45:Src/bootloader_lib.c ****         }
+  46:Src/bootloader_lib.c **** 
+  47:Src/bootloader_lib.c ****         i += 4;
+  91              		.loc 1 47 9 is_stmt 1 view .LVU21
+  92              		.loc 1 47 11 is_stmt 0 view .LVU22
+  93 002c 0CF1040C 		add	ip, ip, #4
+  94              	.LVL8:
+  95              	.L3:
+  96              		.loc 1 47 11 view .LVU23
+  97              	.LBE6:
+  39:Src/bootloader_lib.c ****         uint32_t value = read_flash_word(address + i);
+  98              		.loc 1 39 14 is_stmt 1 discriminator 1 view .LVU24
+  99 0030 BCF5403F 		cmp	ip, #196608
+ 100 0034 03D2     		bcs	.L9
+ 101              	.LBB11:
+  40:Src/bootloader_lib.c **** 
+ 102              		.loc 1 40 9 view .LVU25
+ 103              	.LVL9:
+ 104              	.LBB8:
+ 105              	.LBI8:
+  21:Src/bootloader_lib.c ****     return *(volatile uint32_t*)address;
+ 106              		.loc 1 21 24 view .LVU26
+ 107              	.LBB9:
+  22:Src/bootloader_lib.c **** }
+ 108              		.loc 1 22 5 view .LVU27
+  22:Src/bootloader_lib.c **** }
+ 109              		.loc 1 22 12 is_stmt 0 view .LVU28
+ 110 0036 5EF80C20 		ldr	r2, [lr, ip]
+ 111              	.LVL10:
+  22:Src/bootloader_lib.c **** }
+ 112              		.loc 1 22 12 view .LVU29
+ 113              	.LBE9:
+ARM GAS  /tmp/ccLXUQbL.s 			page 4
+
+
+ 114              	.LBE8:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+ 115              		.loc 1 42 9 is_stmt 1 view .LVU30
+ 116              	.LBB10:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+ 117              		.loc 1 42 14 view .LVU31
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+ 118              		.loc 1 42 22 is_stmt 0 view .LVU32
+ 119 003a 0023     		movs	r3, #0
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+ 120              		.loc 1 42 9 view .LVU33
+ 121 003c F4E7     		b	.L4
+ 122              	.LVL11:
+ 123              	.L9:
+  42:Src/bootloader_lib.c ****             CRC->DR = (uint8_t)(value & 0xFF);
+ 124              		.loc 1 42 9 view .LVU34
+ 125              	.LBE10:
+ 126              	.LBE11:
+  48:Src/bootloader_lib.c ****     }
+  49:Src/bootloader_lib.c **** 
+  50:Src/bootloader_lib.c ****     uint32_t crc_value = CRC->DR;
+ 127              		.loc 1 50 5 is_stmt 1 view .LVU35
+ 128              		.loc 1 50 14 is_stmt 0 view .LVU36
+ 129 003e 044B     		ldr	r3, .L10
+ 130 0040 1868     		ldr	r0, [r3]
+ 131              	.LVL12:
+  51:Src/bootloader_lib.c ****     CRC->CR = CRC_CR_RESET; // Reset after work
+ 132              		.loc 1 51 5 is_stmt 1 view .LVU37
+ 133              		.loc 1 51 13 is_stmt 0 view .LVU38
+ 134 0042 0122     		movs	r2, #1
+ 135 0044 9A60     		str	r2, [r3, #8]
+  52:Src/bootloader_lib.c **** 
+  53:Src/bootloader_lib.c ****     return (crc_value == expected_crc) ? HAL_OK : HAL_ERROR;
+ 136              		.loc 1 53 5 is_stmt 1 view .LVU39
+  54:Src/bootloader_lib.c **** }
+ 137              		.loc 1 54 1 is_stmt 0 view .LVU40
+ 138 0046 001B     		subs	r0, r0, r4
+ 139              	.LVL13:
+ 140              		.loc 1 54 1 view .LVU41
+ 141 0048 18BF     		it	ne
+ 142 004a 0120     		movne	r0, #1
+ 143 004c 10BD     		pop	{r4, pc}
+ 144              	.LVL14:
+ 145              	.L11:
+ 146              		.loc 1 54 1 view .LVU42
+ 147 004e 00BF     		.align	2
+ 148              	.L10:
+ 149 0050 00300240 		.word	1073885184
+ 150 0054 00000108 		.word	134283264
+ 151 0058 00000408 		.word	134479872
+ 152              		.cfi_endproc
+ 153              	.LFE135:
+ 155              		.section	.text.write_flash,"ax",%progbits
+ 156              		.align	1
+ 157              		.global	write_flash
+ 158              		.syntax unified
+ 159              		.thumb
+ARM GAS  /tmp/ccLXUQbL.s 			page 5
+
+
+ 160              		.thumb_func
+ 162              	write_flash:
+ 163              	.LVL15:
+ 164              	.LFB136:
+  55:Src/bootloader_lib.c **** 
+  56:Src/bootloader_lib.c **** /**
+  57:Src/bootloader_lib.c ****  * @brief Write data to flash memory
+  58:Src/bootloader_lib.c ****  *
+  59:Src/bootloader_lib.c ****  * @param block -> which block write to (A/B)
+  60:Src/bootloader_lib.c ****  * @param data  -> pointer to a data buffer
+  61:Src/bootloader_lib.c ****  * @param size  -> size of a data buffer
+  62:Src/bootloader_lib.c ****  *
+  63:Src/bootloader_lib.c ****  * @return HAL_StatusTypeDef
+  64:Src/bootloader_lib.c ****  */
+  65:Src/bootloader_lib.c **** HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size) {
+ 165              		.loc 1 65 82 is_stmt 1 view -0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 24
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169              		.loc 1 65 82 is_stmt 0 view .LVU44
+ 170 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 171              	.LCFI1:
+ 172              		.cfi_def_cfa_offset 24
+ 173              		.cfi_offset 4, -24
+ 174              		.cfi_offset 5, -20
+ 175              		.cfi_offset 6, -16
+ 176              		.cfi_offset 7, -12
+ 177              		.cfi_offset 8, -8
+ 178              		.cfi_offset 14, -4
+ 179 0004 86B0     		sub	sp, sp, #24
+ 180              	.LCFI2:
+ 181              		.cfi_def_cfa_offset 48
+ 182 0006 1E46     		mov	r6, r3
+  66:Src/bootloader_lib.c ****     if (size >= OTA_MAX_IMAGE_SIZE) return HAL_ERROR; // Buffer bigger than block
+ 183              		.loc 1 66 5 is_stmt 1 view .LVU45
+ 184              		.loc 1 66 8 is_stmt 0 view .LVU46
+ 185 0008 B2F5403F 		cmp	r2, #196608
+ 186 000c 76F10003 		sbcs	r3, r6, #0
+ 187 0010 03D3     		bcc	.L24
+ 188              		.loc 1 66 44 discriminator 1 view .LVU47
+ 189 0012 0120     		movs	r0, #1
+ 190              	.LVL16:
+ 191              	.L13:
+  67:Src/bootloader_lib.c **** 
+  68:Src/bootloader_lib.c ****     HAL_FLASH_Unlock();
+  69:Src/bootloader_lib.c **** 
+  70:Src/bootloader_lib.c ****     FLASH_EraseInitTypeDef erase_init;
+  71:Src/bootloader_lib.c ****     erase_init.TypeErase    = FLASH_TYPEERASE_SECTORS;
+  72:Src/bootloader_lib.c ****     erase_init.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+  73:Src/bootloader_lib.c ****     erase_init.NbSectors    = BANKSN_SECTORS;
+  74:Src/bootloader_lib.c **** 
+  75:Src/bootloader_lib.c ****     erase_init.Sector = (block == BLOCK_A) ? BLOCK_A_SECTOR : BLOCK_B_SECTOR;
+  76:Src/bootloader_lib.c **** 
+  77:Src/bootloader_lib.c ****     // Erasing block before writeing new firmware to it
+  78:Src/bootloader_lib.c ****     uint32_t sector_err;
+  79:Src/bootloader_lib.c ****     if (HAL_FLASHEx_Erase(&erase_init, &sector_err) == HAL_ERROR) {
+  80:Src/bootloader_lib.c ****         HAL_FLASH_Lock();
+ARM GAS  /tmp/ccLXUQbL.s 			page 6
+
+
+  81:Src/bootloader_lib.c ****         return HAL_FLASH_GetError();
+  82:Src/bootloader_lib.c ****     }
+  83:Src/bootloader_lib.c **** 
+  84:Src/bootloader_lib.c ****     // Writeing to block checking the size
+  85:Src/bootloader_lib.c ****     uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
+  86:Src/bootloader_lib.c ****     uint32_t i = 0;
+  87:Src/bootloader_lib.c ****     while (i < size && (address + i) - address < OTA_MAX_IMAGE_SIZE) {
+  88:Src/bootloader_lib.c ****         HAL_StatusTypeDef s = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, data[i]);
+  89:Src/bootloader_lib.c ****         i += 4;
+  90:Src/bootloader_lib.c **** 
+  91:Src/bootloader_lib.c ****         if (s == HAL_ERROR) {
+  92:Src/bootloader_lib.c ****             HAL_FLASH_Lock();
+  93:Src/bootloader_lib.c ****             return HAL_FLASH_GetError();
+  94:Src/bootloader_lib.c ****         }
+  95:Src/bootloader_lib.c ****     }
+  96:Src/bootloader_lib.c **** 
+  97:Src/bootloader_lib.c ****     HAL_FLASH_Lock();
+  98:Src/bootloader_lib.c ****     return HAL_OK;
+  99:Src/bootloader_lib.c **** }
+ 192              		.loc 1 99 1 view .LVU48
+ 193 0014 06B0     		add	sp, sp, #24
+ 194              	.LCFI3:
+ 195              		.cfi_remember_state
+ 196              		.cfi_def_cfa_offset 24
+ 197              		@ sp needed
+ 198 0016 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 199              	.LVL17:
+ 200              	.L24:
+ 201              	.LCFI4:
+ 202              		.cfi_restore_state
+ 203              		.loc 1 99 1 view .LVU49
+ 204 001a 0446     		mov	r4, r0
+ 205 001c 0F46     		mov	r7, r1
+ 206 001e 1546     		mov	r5, r2
+  68:Src/bootloader_lib.c **** 
+ 207              		.loc 1 68 5 is_stmt 1 view .LVU50
+ 208 0020 FFF7FEFF 		bl	HAL_FLASH_Unlock
+ 209              	.LVL18:
+  70:Src/bootloader_lib.c ****     erase_init.TypeErase    = FLASH_TYPEERASE_SECTORS;
+ 210              		.loc 1 70 5 view .LVU51
+  71:Src/bootloader_lib.c ****     erase_init.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+ 211              		.loc 1 71 5 view .LVU52
+  71:Src/bootloader_lib.c ****     erase_init.VoltageRange = FLASH_VOLTAGE_RANGE_3;
+ 212              		.loc 1 71 29 is_stmt 0 view .LVU53
+ 213 0024 0023     		movs	r3, #0
+ 214 0026 0193     		str	r3, [sp, #4]
+  72:Src/bootloader_lib.c ****     erase_init.NbSectors    = BANKSN_SECTORS;
+ 215              		.loc 1 72 5 is_stmt 1 view .LVU54
+  72:Src/bootloader_lib.c ****     erase_init.NbSectors    = BANKSN_SECTORS;
+ 216              		.loc 1 72 29 is_stmt 0 view .LVU55
+ 217 0028 0223     		movs	r3, #2
+ 218 002a 0593     		str	r3, [sp, #20]
+  73:Src/bootloader_lib.c **** 
+ 219              		.loc 1 73 5 is_stmt 1 view .LVU56
+  73:Src/bootloader_lib.c **** 
+ 220              		.loc 1 73 29 is_stmt 0 view .LVU57
+ 221 002c 0493     		str	r3, [sp, #16]
+ARM GAS  /tmp/ccLXUQbL.s 			page 7
+
+
+  75:Src/bootloader_lib.c **** 
+ 222              		.loc 1 75 5 is_stmt 1 view .LVU58
+  75:Src/bootloader_lib.c **** 
+ 223              		.loc 1 75 61 is_stmt 0 view .LVU59
+ 224 002e 1CBB     		cbnz	r4, .L21
+  75:Src/bootloader_lib.c **** 
+ 225              		.loc 1 75 61 discriminator 1 view .LVU60
+ 226 0030 0423     		movs	r3, #4
+ 227              	.L14:
+  75:Src/bootloader_lib.c **** 
+ 228              		.loc 1 75 23 discriminator 3 view .LVU61
+ 229 0032 0393     		str	r3, [sp, #12]
+  78:Src/bootloader_lib.c ****     if (HAL_FLASHEx_Erase(&erase_init, &sector_err) == HAL_ERROR) {
+ 230              		.loc 1 78 5 is_stmt 1 view .LVU62
+  79:Src/bootloader_lib.c ****         HAL_FLASH_Lock();
+ 231              		.loc 1 79 5 view .LVU63
+  79:Src/bootloader_lib.c ****         HAL_FLASH_Lock();
+ 232              		.loc 1 79 9 is_stmt 0 view .LVU64
+ 233 0034 6946     		mov	r1, sp
+ 234 0036 01A8     		add	r0, sp, #4
+ 235 0038 FFF7FEFF 		bl	HAL_FLASHEx_Erase
+ 236              	.LVL19:
+  79:Src/bootloader_lib.c ****         HAL_FLASH_Lock();
+ 237              		.loc 1 79 8 discriminator 1 view .LVU65
+ 238 003c 0128     		cmp	r0, #1
+ 239 003e 1DD0     		beq	.L25
+  85:Src/bootloader_lib.c ****     uint32_t i = 0;
+ 240              		.loc 1 85 5 is_stmt 1 view .LVU66
+  85:Src/bootloader_lib.c ****     uint32_t i = 0;
+ 241              		.loc 1 85 59 is_stmt 0 view .LVU67
+ 242 0040 14BB     		cbnz	r4, .L22
+  85:Src/bootloader_lib.c ****     uint32_t i = 0;
+ 243              		.loc 1 85 14 discriminator 1 view .LVU68
+ 244 0042 DFF85480 		ldr	r8, .L26
+ 245              	.L16:
+ 246              	.LVL20:
+  86:Src/bootloader_lib.c ****     while (i < size && (address + i) - address < OTA_MAX_IMAGE_SIZE) {
+ 247              		.loc 1 86 5 is_stmt 1 view .LVU69
+  87:Src/bootloader_lib.c ****         HAL_StatusTypeDef s = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, data[i]);
+ 248              		.loc 1 87 5 view .LVU70
+  86:Src/bootloader_lib.c ****     while (i < size && (address + i) - address < OTA_MAX_IMAGE_SIZE) {
+ 249              		.loc 1 86 14 is_stmt 0 view .LVU71
+ 250 0046 0024     		movs	r4, #0
+ 251              	.LVL21:
+ 252              	.L17:
+  87:Src/bootloader_lib.c ****         HAL_StatusTypeDef s = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, data[i]);
+ 253              		.loc 1 87 21 is_stmt 1 discriminator 1 view .LVU72
+ 254 0048 AC42     		cmp	r4, r5
+ 255 004a 4FF00000 		mov	r0, #0
+ 256 004e B041     		sbcs	r0, r0, r6
+ 257 0050 1DD2     		bcs	.L18
+  87:Src/bootloader_lib.c ****         HAL_StatusTypeDef s = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, address + i, data[i]);
+ 258              		.loc 1 87 21 is_stmt 0 discriminator 2 view .LVU73
+ 259 0052 B4F5403F 		cmp	r4, #196608
+ 260 0056 1AD2     		bcs	.L18
+ 261              	.LBB12:
+  88:Src/bootloader_lib.c ****         i += 4;
+ARM GAS  /tmp/ccLXUQbL.s 			page 8
+
+
+ 262              		.loc 1 88 9 is_stmt 1 view .LVU74
+  88:Src/bootloader_lib.c ****         i += 4;
+ 263              		.loc 1 88 31 is_stmt 0 view .LVU75
+ 264 0058 3A5D     		ldrb	r2, [r7, r4]	@ zero_extendqisi2
+ 265 005a 0023     		movs	r3, #0
+ 266 005c 08EB0401 		add	r1, r8, r4
+ 267 0060 0220     		movs	r0, #2
+ 268 0062 FFF7FEFF 		bl	HAL_FLASH_Program
+ 269              	.LVL22:
+  89:Src/bootloader_lib.c **** 
+ 270              		.loc 1 89 9 is_stmt 1 view .LVU76
+  89:Src/bootloader_lib.c **** 
+ 271              		.loc 1 89 11 is_stmt 0 view .LVU77
+ 272 0066 0434     		adds	r4, r4, #4
+ 273              	.LVL23:
+  91:Src/bootloader_lib.c ****             HAL_FLASH_Lock();
+ 274              		.loc 1 91 9 is_stmt 1 view .LVU78
+  91:Src/bootloader_lib.c ****             HAL_FLASH_Lock();
+ 275              		.loc 1 91 12 is_stmt 0 view .LVU79
+ 276 0068 0128     		cmp	r0, #1
+ 277 006a EDD1     		bne	.L17
+  92:Src/bootloader_lib.c ****             return HAL_FLASH_GetError();
+ 278              		.loc 1 92 13 is_stmt 1 view .LVU80
+ 279 006c FFF7FEFF 		bl	HAL_FLASH_Lock
+ 280              	.LVL24:
+  93:Src/bootloader_lib.c ****         }
+ 281              		.loc 1 93 13 view .LVU81
+  93:Src/bootloader_lib.c ****         }
+ 282              		.loc 1 93 20 is_stmt 0 view .LVU82
+ 283 0070 FFF7FEFF 		bl	HAL_FLASH_GetError
+ 284              	.LVL25:
+  93:Src/bootloader_lib.c ****         }
+ 285              		.loc 1 93 20 discriminator 1 view .LVU83
+ 286 0074 C0B2     		uxtb	r0, r0
+ 287 0076 CDE7     		b	.L13
+ 288              	.LVL26:
+ 289              	.L21:
+  93:Src/bootloader_lib.c ****         }
+ 290              		.loc 1 93 20 discriminator 1 view .LVU84
+ 291              	.LBE12:
+  75:Src/bootloader_lib.c **** 
+ 292              		.loc 1 75 61 discriminator 2 view .LVU85
+ 293 0078 0623     		movs	r3, #6
+ 294 007a DAE7     		b	.L14
+ 295              	.L25:
+  80:Src/bootloader_lib.c ****         return HAL_FLASH_GetError();
+ 296              		.loc 1 80 9 is_stmt 1 view .LVU86
+ 297 007c FFF7FEFF 		bl	HAL_FLASH_Lock
+ 298              	.LVL27:
+  81:Src/bootloader_lib.c ****     }
+ 299              		.loc 1 81 9 view .LVU87
+  81:Src/bootloader_lib.c ****     }
+ 300              		.loc 1 81 16 is_stmt 0 view .LVU88
+ 301 0080 FFF7FEFF 		bl	HAL_FLASH_GetError
+ 302              	.LVL28:
+  81:Src/bootloader_lib.c ****     }
+ 303              		.loc 1 81 16 discriminator 1 view .LVU89
+ARM GAS  /tmp/ccLXUQbL.s 			page 9
+
+
+ 304 0084 C0B2     		uxtb	r0, r0
+ 305 0086 C5E7     		b	.L13
+ 306              	.L22:
+  85:Src/bootloader_lib.c ****     uint32_t i = 0;
+ 307              		.loc 1 85 14 discriminator 2 view .LVU90
+ 308 0088 DFF81080 		ldr	r8, .L26+4
+ 309 008c DBE7     		b	.L16
+ 310              	.LVL29:
+ 311              	.L18:
+  97:Src/bootloader_lib.c ****     return HAL_OK;
+ 312              		.loc 1 97 5 is_stmt 1 view .LVU91
+ 313 008e FFF7FEFF 		bl	HAL_FLASH_Lock
+ 314              	.LVL30:
+  98:Src/bootloader_lib.c **** }
+ 315              		.loc 1 98 5 view .LVU92
+  98:Src/bootloader_lib.c **** }
+ 316              		.loc 1 98 12 is_stmt 0 view .LVU93
+ 317 0092 0020     		movs	r0, #0
+ 318 0094 BEE7     		b	.L13
+ 319              	.L27:
+ 320 0096 00BF     		.align	2
+ 321              	.L26:
+ 322 0098 00000108 		.word	134283264
+ 323 009c 00000408 		.word	134479872
+ 324              		.cfi_endproc
+ 325              	.LFE136:
+ 327              		.text
+ 328              	.Letext0:
+ 329              		.file 2 "Inc/bootloader_lib.h"
+ 330              		.file 3 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 331              		.file 4 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 332              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 333              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 334              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h"
+ 335              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h"
+ARM GAS  /tmp/ccLXUQbL.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 bootloader_lib.c
+     /tmp/ccLXUQbL.s:21     .text.verify_firmware:00000000 $t
+     /tmp/ccLXUQbL.s:27     .text.verify_firmware:00000000 verify_firmware
+     /tmp/ccLXUQbL.s:149    .text.verify_firmware:00000050 $d
+     /tmp/ccLXUQbL.s:156    .text.write_flash:00000000 $t
+     /tmp/ccLXUQbL.s:162    .text.write_flash:00000000 write_flash
+     /tmp/ccLXUQbL.s:322    .text.write_flash:00000098 $d
+
+UNDEFINED SYMBOLS
+HAL_FLASH_Unlock
+HAL_FLASHEx_Erase
+HAL_FLASH_Program
+HAL_FLASH_Lock
+HAL_FLASH_GetError
