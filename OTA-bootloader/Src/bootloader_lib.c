@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc);
+_Bool verify_firmware(flash_block_t block, uint32_t expected_crc);
 HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size);
 
 /**
@@ -28,15 +28,15 @@ static inline uint32_t read_flash_word(uint32_t address) {
  * @param block        -> which block verify (A/B)
  * @param expected_crc -> correct CRC checksum
  *
- * @return HAL_StatusTypeDef
+ * @return _Bool
  */
-HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc) {
+_Bool verify_firmware(flash_block_t block, uint32_t expected_crc) {
     uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
 
     CRC->CR = CRC_CR_RESET; // Reset before work
 
     uint32_t i = 0;
-    while (i < OTA_MAX_IMAGE_SIZE) { //TODO: Change size
+    while (i < 128) { // Check small portion of firmware 
         uint32_t value = read_flash_word(address + i);
 
         for (uint8_t j = 0; j < 4; j++) {
@@ -50,7 +50,7 @@ HAL_StatusTypeDef verify_firmware(flash_block_t block, uint32_t expected_crc) {
     uint32_t crc_value = CRC->DR;
     CRC->CR = CRC_CR_RESET; // Reset after work
 
-    return (crc_value == expected_crc) ? HAL_OK : HAL_ERROR;
+    return (crc_value == expected_crc) ? 1 : 0;
 }
 
 /**
