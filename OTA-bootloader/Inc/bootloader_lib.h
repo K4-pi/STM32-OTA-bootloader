@@ -27,6 +27,8 @@ typedef enum {
 #define K(n) ((n) * 1024U) // KB
 #define OTA_MAX_IMAGE_SIZE K(192)
 
+#define CHUNK_SIZE K(1)
+
 #define META_BEGIN 0x800C000
 #define META_END   0x08010000 // META_BEGIN + 16KB
 

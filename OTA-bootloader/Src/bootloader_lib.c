@@ -7,8 +7,10 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <sys/types.h>
 
-_Bool verify_firmware(flash_block_t block, uint32_t expected_crc);
+_Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc);
+_Bool verify_firmware_chunk(uint8_t *data, uint32_t expected_crc);
 HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size);
 
 /**
@@ -22,21 +24,32 @@ static inline uint32_t read_flash_word(uint32_t address) {
     return *(volatile uint32_t*)address;
 }
 
+/*
+TODO:
+    * MQTT server sends firmware by chunks, with CRC checksum of this chunk.
+    We calculate CRC checksum and compare it to the send one, if correct we 
+    write chunk to a flash region of a memory. After whole firmware send 
+    MQTT serwer sends image size and it's final checksum of a whole image,
+    we compare it and if no mistach we can start booting to a new firmware.
+
+*/
+
 /**
- * @brief Verify firmware CRC checksum
+ * @brief Verify firmware CRC checksum by block
  *
- * @param block        -> which block verify (A/B)
- * @param expected_crc -> correct CRC checksum
+ * @param block which block verify (A/B)
+ * @param firmware_size size of a firmware to check
+ * @param expected_crc correct CRC checksum
  *
  * @return _Bool
  */
-_Bool verify_firmware(flash_block_t block, uint32_t expected_crc) {
+_Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc) {
     uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
 
     CRC->CR = CRC_CR_RESET; // Reset before work
 
     uint32_t i = 0;
-    while (i < 128) { // Check small portion of firmware 
+    while (i < firmware_size) { 
         uint32_t value = read_flash_word(address + i);
 
         for (uint8_t j = 0; j < 4; j++) {
@@ -54,11 +67,30 @@ _Bool verify_firmware(flash_block_t block, uint32_t expected_crc) {
 }
 
 /**
- * @brief Write data to flash memory
+ * @brief Verify firmware CRC checksum by 1 KB chunks (chunk size = CHUNK_SIZE)
  *
- * @param block -> which block write to (A/B)
- * @param data  -> pointer to a data buffer
- * @param size  -> size of a data buffer
+ * @param data chunk data of a firmware 
+ * @param expected_crc correct CRC checksum
+ *
+ * @return _Bool
+ */
+_Bool verify_firmware_chunk(uint8_t *data, uint32_t expected_crc) {
+    CRC->CR = CRC_CR_RESET;
+
+    for (uint32_t i = 0; i < CHUNK_SIZE; i++) CRC->DR = data[i];
+
+    uint32_t crc_value = CRC->DR;
+    CRC->CR = CRC_CR_RESET; // Reset after work
+
+    return (crc_value == expected_crc) ? 1 : 0;
+}   
+
+/**
+ * @brief Write firmware data to flash memory
+ *
+ * @param block which block write to (A/B)
+ * @param data pointer to a data buffer
+ * @param size size of a data buffer
  *
  * @return HAL_StatusTypeDef
  */
