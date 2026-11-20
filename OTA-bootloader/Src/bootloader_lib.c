@@ -10,9 +10,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
-_Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc);
-_Bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc);
+bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc);
+bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc);
 HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint32_t size);
 inline HAL_StatusTypeDef write_header(const app_header_t *header);
 
@@ -44,9 +45,9 @@ TODO:
  * @param firmware_size size of a firmware to check
  * @param expected_crc correct CRC checksum
  *
- * @return _Bool
+ * @return bool
  */
-_Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc) {
+bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc) {
     uint32_t address = (block == BLOCK_A) ? BLOCK_A_BEGIN : BLOCK_B_BEGIN;
 
     CRC->CR = CRC_CR_RESET; // Reset before work
@@ -66,7 +67,7 @@ _Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_
     uint32_t crc_value = CRC->DR;
     CRC->CR = CRC_CR_RESET; // Reset after work
 
-    return (crc_value == expected_crc) ? 1 : 0;
+    return (crc_value == expected_crc) ? true : false;
 }
 
 /**
@@ -76,9 +77,9 @@ _Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_
  * @param size size of a chunk
  * @param expected_crc correct CRC checksum
  *
- * @return _Bool
+ * @return bool
  */
-_Bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc) {
+bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc) {
     CRC->CR = CRC_CR_RESET;
 
     for (uint32_t i = 0; i < size; i++) CRC->DR = data[i];
@@ -86,7 +87,7 @@ _Bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc)
     uint32_t crc_value = CRC->DR;
     CRC->CR = CRC_CR_RESET; // Reset after work
 
-    return (crc_value == expected_crc) ? 1 : 0;
+    return (crc_value == expected_crc) ? true : false;
 }   
 
 /**
