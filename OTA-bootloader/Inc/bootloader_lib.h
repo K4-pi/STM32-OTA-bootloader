@@ -1,6 +1,8 @@
 #ifndef __BOOTLOADER_LIB_H
 #define __BOOTLOADER_LIB_H
 
+#include <stdint.h>
+
 /*
  * Flash sectors
  *
@@ -19,6 +21,7 @@ typedef enum {
     BLOCK_B
 } flash_block_t;
 
+#define META_SECTOR 3
 #define BLOCK_A_SECTOR 4
 #define BLOCK_B_SECTOR 6
 
@@ -37,5 +40,13 @@ typedef enum {
 
 #define BLOCK_B_BEGIN 0x08040000
 #define BLOCK_B_END   0x08060000
+
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t flag;
+    uint32_t size;
+    uint32_t crc;
+} app_header_t;
 
 #endif /* __BOOTLOADER_LIB_H */

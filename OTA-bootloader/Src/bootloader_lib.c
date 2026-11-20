@@ -2,6 +2,8 @@
 
 #include "stm32f407xx.h"
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_def.h"
+#include "stm32f4xx_hal_flash.h"
 // #include "stm32f4xx_hal_flash.h"
 // #include "stm32f4xx_hal_flash_ex.h"
 
@@ -10,13 +12,14 @@
 #include <sys/types.h>
 
 _Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc);
-_Bool verify_firmware_chunk(uint8_t *data, uint32_t expected_crc);
-HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size);
+_Bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc);
+HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint32_t size);
+inline HAL_StatusTypeDef write_header(const app_header_t *header);
 
 /**
  * @brief Read data at given address
  *
- * @param address -> address to read from
+ * @param address address to read from
  *
  * @return value at address
  */
@@ -70,14 +73,15 @@ _Bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_
  * @brief Verify firmware CRC checksum by 1 KB chunks (chunk size = CHUNK_SIZE)
  *
  * @param data chunk data of a firmware 
+ * @param size size of a chunk
  * @param expected_crc correct CRC checksum
  *
  * @return _Bool
  */
-_Bool verify_firmware_chunk(uint8_t *data, uint32_t expected_crc) {
+_Bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc) {
     CRC->CR = CRC_CR_RESET;
 
-    for (uint32_t i = 0; i < CHUNK_SIZE; i++) CRC->DR = data[i];
+    for (uint32_t i = 0; i < size; i++) CRC->DR = data[i];
 
     uint32_t crc_value = CRC->DR;
     CRC->CR = CRC_CR_RESET; // Reset after work
@@ -94,7 +98,7 @@ _Bool verify_firmware_chunk(uint8_t *data, uint32_t expected_crc) {
  *
  * @return HAL_StatusTypeDef
  */
-HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size) {
+HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint32_t size) {
     if (size >= OTA_MAX_IMAGE_SIZE) return HAL_ERROR; // Buffer bigger than block
 
     HAL_FLASH_Unlock();
@@ -128,4 +132,8 @@ HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint64_t size)
 
     HAL_FLASH_Lock();
     return HAL_OK;
+}
+
+inline HAL_StatusTypeDef write_header(const app_header_t *header) {
+    return write_flash(META_SECTOR, (uint8_t *)header, sizeof *header);
 }
