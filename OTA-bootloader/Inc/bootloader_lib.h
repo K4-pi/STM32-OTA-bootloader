@@ -49,4 +49,6 @@ typedef struct {
     uint32_t crc;
 } app_header_t;
 
+#define OTA_MAGIC 0x4F544131 // "OTA1"
+
 #endif /* __BOOTLOADER_LIB_H */

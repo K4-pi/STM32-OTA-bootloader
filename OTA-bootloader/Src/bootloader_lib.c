@@ -9,13 +9,14 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 #include <sys/types.h>
 #include <stdbool.h>
 
 bool verify_firmware_block(flash_block_t block, uint32_t firmware_size, uint32_t expected_crc);
 bool verify_firmware_chunk(uint8_t *data, uint32_t size, uint32_t expected_crc);
 HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint32_t size);
-inline HAL_StatusTypeDef write_header(const app_header_t *header);
+inline HAL_StatusTypeDef write_app_header(const app_header_t *header);
 
 /**
  * @brief Read data at given address
@@ -135,6 +136,39 @@ HAL_StatusTypeDef write_flash(flash_block_t block, uint8_t *data, uint32_t size)
     return HAL_OK;
 }
 
-inline HAL_StatusTypeDef write_header(const app_header_t *header) {
-    return write_flash(META_SECTOR, (uint8_t *)header, sizeof *header);
+/**
+ * @brief Write header to a flash memory
+ *
+ * @param header pointer to app_header_t struct which will be saved
+ *
+ * @return bool true - success, false - failure
+ */
+inline HAL_StatusTypeDef write_app_header(const app_header_t *header) {
+    return write_flash(META_SECTOR, (uint8_t *)header, sizeof(*header));
+}
+
+/**
+ * @brief Validate header based on it's data
+ *
+ * @param header pointer to app_header_t struct to validate
+ *
+ * @return bool true - success, false - failure
+ */
+bool is_header_valid(const app_header_t *header) {
+    return header->magic == OTA_MAGIC &&
+           header->size > 0 && header->size <= OTA_MAX_IMAGE_SIZE;
+           // add when crc function implemented  && header->crc == 
+}
+
+/**
+ * @brief Get app header from flash memory
+ *
+ * @param header pointer to app_header_t struct to save data to
+ *
+ * @return bool true - success, false - failure
+ */
+bool get_app_header(app_header_t *header) {
+    memcpy(header, (void *)META_BEGIN, sizeof(*header));
+
+    return (is_header_valid(header)) ? true : false;
 }
